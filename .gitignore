@@ -41,3 +41,6 @@ export.error.log
 *.tmp
 *.bak
 *.backup
+
+# Local configuration (user-specific paths)
+.local-config.md
