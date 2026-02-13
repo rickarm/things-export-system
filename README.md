@@ -407,9 +407,9 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ## Support & Feedback
 
-- 🐛 **Found a bug?** Open an [issue](https://github.com/YOUR_USERNAME/things-export-system/issues)
-- 💡 **Feature idea?** Open a [feature request](https://github.com/YOUR_USERNAME/things-export-system/issues)
-- ❓ **Questions?** Check the troubleshooting section or open a [question issue](https://github.com/YOUR_USERNAME/things-export-system/issues)
+- 🐛 **Found a bug?** Open an [issue](https://github.com/rickarm/things-export-system/issues)
+- 💡 **Feature idea?** Open a [feature request](https://github.com/rickarm/things-export-system/issues)
+- ❓ **Questions?** Check the troubleshooting section or open a [question issue](https://github.com/rickarm/things-export-system/issues)
 
 ## Roadmap
 
