@@ -290,7 +290,12 @@ set finalJSON to "{" & ¬
 -- ========================================
 -- WRITE TO FILE
 -- ========================================
-set outputDir to POSIX path of (path to home folder) & "Library/Mobile Documents/com~apple~CloudDocs/kb/ThingsSnapshot/"
+-- CONFIGURATION: Change this path to your preferred export location
+-- Examples:
+--   iCloud: "Library/Mobile Documents/com~apple~CloudDocs/ThingsExports/"
+--   Local: "Documents/ThingsSnapshot/"
+--   Dropbox: "Dropbox/ThingsExports/"
+set outputDir to POSIX path of (path to home folder) & "Documents/ThingsSnapshot/"
 set outputFile to outputDir & todayString & "_things_snapshot.json"
 
 -- Create directory if needed

@@ -39,7 +39,7 @@ echo ""
 
 # Define paths
 SCRIPT_DIR="$HOME/Scripts"
-SNAPSHOT_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/kb/ThingsSnapshot"
+SNAPSHOT_DIR="$HOME/Documents/ThingsSnapshot"
 LAUNCHD_PLIST="$HOME/Library/LaunchAgents/com.rickarmbrust.things-export.plist"
 CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 USERNAME=$(whoami)

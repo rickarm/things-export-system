@@ -333,6 +333,38 @@ jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 
 ## Customization
 
+### Change Export Location
+
+The default export location is `~/Documents/ThingsSnapshot/`. To use a different location:
+
+**Option 1: iCloud Drive (Recommended for sync across devices)**
+
+Edit the AppleScript (`~/Scripts/export_things_daily_snapshot.scpt`):
+```applescript
+-- Find this line (around line 293):
+set outputDir to POSIX path of (path to home folder) & "Documents/ThingsSnapshot/"
+
+-- Change to iCloud:
+set outputDir to POSIX path of (path to home folder) & "Library/Mobile Documents/com~apple~CloudDocs/ThingsExports/"
+```
+
+**Option 2: Dropbox**
+```applescript
+set outputDir to POSIX path of (path to home folder) & "Dropbox/ThingsExports/"
+```
+
+**Option 3: Any custom path**
+```applescript
+set outputDir to POSIX path of (path to home folder) & "YOUR/CUSTOM/PATH/"
+```
+
+After changing the path, update the plist file to match:
+```bash
+nano ~/Library/LaunchAgents/com.rickarmbrust.things-export.plist
+```
+
+Update the log file paths to match your new directory.
+
 ### Change Export Time
 
 Edit the plist file:
@@ -388,7 +420,7 @@ set outputDir to POSIX path of (path to home folder) & "Documents/ThingsSnapshot
 **In the plist:**
 ```xml
 <key>StandardOutPath</key>
-<string>/Users/rick/Documents/ThingsSnapshot/export.log</string>
+<string>/Users/YOUR_USERNAME/Documents/ThingsSnapshot/export.log</string>
 ```
 
 ## Uninstall

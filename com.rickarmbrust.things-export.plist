@@ -20,10 +20,10 @@
 	</dict>
 
 	<key>StandardOutPath</key>
-	<string>/Users/USERNAME/Library/Mobile Documents/com~apple~CloudDocs/kb/ThingsSnapshot/export.log</string>
+	<string>/Users/USERNAME/Documents/ThingsSnapshot/export.log</string>
 
 	<key>StandardErrorPath</key>
-	<string>/Users/USERNAME/Library/Mobile Documents/com~apple~CloudDocs/kb/ThingsSnapshot/export.error.log</string>
+	<string>/Users/USERNAME/Documents/ThingsSnapshot/export.error.log</string>
 
 	<key>RunAtLoad</key>
 	<false/>
