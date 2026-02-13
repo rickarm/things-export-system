@@ -96,14 +96,31 @@ Or use `jq` for formatted viewing:
 jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
-## JSON Schema
+## JSON Schema (v2.0)
+
+### Understanding Things Dates
+
+**Important:** Things uses two distinct date concepts:
+- **Scheduled Date** (When field): When you plan to **START** working on the task. Tasks appear in **Today** when this date arrives.
+- **Due Date** (Deadline field): When the task must be **COMPLETED**. This represents external deadlines.
+
+The v2.0 schema uses clear naming (`scheduled_date` vs `due_date`) to avoid confusion.
 
 ### Top-Level Structure
 
 ```json
 {
-  "generated_at": "2026-02-04T06:00:00Z",
-  "date": "2026-02-04",
+  "schema_version": "2.0",
+  "generated_at": "2026-02-13T06:00:00Z",
+  "date": "2026-02-13",
+  "field_guide": {
+    "scheduled_date": "Start date - when you plan to BEGIN this task",
+    "due_date": "Deadline - when this task must be COMPLETED",
+    "is_in_today": "Boolean - is this task's scheduled date today or earlier?",
+    "is_overdue": "Boolean - is this task past its deadline?",
+    "days_until_due": "Integer - days remaining until deadline",
+    "days_since_scheduled": "Integer - days since task became active"
+  },
   "open_tasks": [...],
   "active_projects": [...],
   "completed_tasks_14d": [...]
@@ -120,10 +137,14 @@ jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
   "project": "Project name",
   "notes": "Task notes",
   "tags": ["tag1", "tag2"],
-  "activation_date": "2026-02-01T09:00:00Z",
+  "scheduled_date": "2026-02-01T09:00:00Z",
   "due_date": "2026-02-10T17:00:00Z",
   "creation_date": "2026-01-15T10:30:00Z",
-  "modification_date": "2026-02-01T14:20:00Z"
+  "modification_date": "2026-02-01T14:20:00Z",
+  "is_in_today": true,
+  "is_overdue": false,
+  "days_until_due": 7,
+  "days_since_scheduled": 12
 }
 ```
 
@@ -161,6 +182,9 @@ jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 - **Null values**: Missing dates appear as `null` (not quoted)
 - **Empty strings**: Missing area/project/notes appear as `""`
 - **Tags**: Always an array, empty if no tags: `[]`
+- **Booleans**: `is_in_today` and `is_overdue` are JSON booleans (`true`/`false`)
+- **Calculated fields**: `days_until_due` and `days_since_scheduled` are integers (or `null`)
+- **Negative days**: `days_until_due` can be negative if task is overdue
 
 ## AI Analysis Use Cases
 
@@ -434,4 +458,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Version
 
-Version 1.0 - February 2026
+**Version 2.0** - February 2026
+
+### What's New in v2.0
+- ✅ Renamed `activation_date` → `scheduled_date` for clarity
+- ✅ Added AI-friendly calculated fields: `is_in_today`, `is_overdue`, `days_until_due`, `days_since_scheduled`
+- ✅ Added inline `field_guide` explaining Things date model
+- ✅ Improved schema version tracking

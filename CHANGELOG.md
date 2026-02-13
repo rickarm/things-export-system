@@ -1,5 +1,78 @@
 # Changelog
 
+## Version 2.0 - February 13, 2026
+
+### 🎉 Major Schema Update
+
+This release significantly improves the export schema to align with Things' date model and add AI-friendly metadata.
+
+### Breaking Changes
+
+**Field Renamed:**
+- `activation_date` → `scheduled_date`
+  - Better reflects Things terminology ("When" = when to START)
+  - Clearer distinction from `due_date` (when to FINISH)
+  - See [MIGRATION_V2.md](MIGRATION_V2.md) for upgrade guide
+
+### New Features
+
+**Schema Version Tracking:**
+- Added `schema_version: "2.0"` to top-level JSON
+- Enables tools to detect and handle schema changes
+
+**Inline Field Guide:**
+- Added `field_guide` object explaining date fields
+- Helps AI understand Things' date model without external documentation
+
+**AI-Friendly Calculated Fields:**
+Each task now includes:
+- `is_in_today` (boolean) - Is scheduled date today or earlier?
+- `is_overdue` (boolean) - Is past the deadline?
+- `days_until_due` (integer/null) - Days remaining until deadline
+- `days_since_scheduled` (integer/null) - Days since task became active
+
+These fields eliminate the need for AI to do complex date math.
+
+### Improvements
+
+**Better Error Handling:**
+- AppleScript now auto-launches Things3 if not running
+- Improved file I/O error handling with specific error messages
+- Better error propagation for debugging
+
+**Installation Pre-Flight Checks:**
+- Verifies Things3 is installed before running
+- Checks for osascript availability
+- Checks for launchctl availability
+- Provides helpful error messages for missing dependencies
+
+**Documentation:**
+- Added explanation of Things date model (scheduled vs due)
+- Updated schema examples with new fields
+- Added migration guide for v1.0 users
+- Added example AI prompts leveraging new fields
+
+### Migration
+
+See [MIGRATION_V2.md](MIGRATION_V2.md) for detailed upgrade instructions.
+
+**Quick Upgrade:**
+```bash
+git pull
+./install.sh
+```
+
+### Why v2.0?
+
+Based on user feedback, the `activation_date` field name was confusing:
+- It's actually Things' "scheduled date" (when to start)
+- Many users confused it with "due date" (when to finish)
+- AI agents often misunderstood the Today list behavior
+
+v2.0 fixes this with clear naming and helpful calculated fields.
+
+---
+
 ## Version 1.2 - February 4, 2026
 
 ### Fixed

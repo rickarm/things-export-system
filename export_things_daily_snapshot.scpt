@@ -78,6 +78,31 @@ on getProjectName(theTask)
 	end try
 end getProjectName
 
+-- Helper function to calculate days between dates
+on daysBetween(fromDate, toDate)
+	if fromDate is missing value or toDate is missing value then return "null"
+	set timeDiff to toDate - fromDate
+	set daysDiff to round (timeDiff / days) rounding down
+	return daysDiff as string
+end daysBetween
+
+-- Helper function to check if date is today or past
+on isDateTodayOrPast(theDate)
+	if theDate is missing value then return false
+	set todayMidnight to (current date)
+	set hours of todayMidnight to 0
+	set minutes of todayMidnight to 0
+	set seconds of todayMidnight to 0
+	return theDate ≤ todayMidnight
+end isDateTodayOrPast
+
+-- Helper function to check if task is overdue
+on isOverdue(theDueDate)
+	if theDueDate is missing value then return false
+	set now to current date
+	return theDueDate < now
+end isOverdue
+
 -- Main script
 try
 	-- Check if Things3 is running, launch if needed
@@ -113,14 +138,37 @@ tell application "Things3"
 		set areaName to my getAreaName(aTask)
 		set projectName to my getProjectName(aTask)
 
-		-- Get dates
-		set taskActivationDate to my formatDate(activation date of aTask)
-		set taskDueDate to my formatDate(due date of aTask)
-		set taskCreationDate to my formatDate(creation date of aTask)
-		set taskModificationDate to my formatDate(modification date of aTask)
+		-- Get dates (raw values for calculations)
+		set taskScheduledDate to activation date of aTask
+		set taskDueDate to due date of aTask
+		set taskCreationDate to creation date of aTask
+		set taskModificationDate to modification date of aTask
 
 		-- Get tags
 		set taskTags to my getTagNames(tags of aTask)
+
+		-- Calculate AI-friendly metadata
+		set nowDate to current date
+		set isInToday to my isDateTodayOrPast(taskScheduledDate)
+		set isTaskOverdue to my isOverdue(taskDueDate)
+
+		-- Days until due (null if no due date)
+		set daysUntilDue to "null"
+		if taskDueDate is not missing value then
+			set daysUntilDue to my daysBetween(nowDate, taskDueDate)
+		end if
+
+		-- Days since scheduled (null if no scheduled date)
+		set daysSinceScheduled to "null"
+		if taskScheduledDate is not missing value then
+			set daysSinceScheduled to my daysBetween(taskScheduledDate, nowDate)
+		end if
+
+		-- Format dates as ISO strings
+		set taskScheduledDateStr to my formatDate(taskScheduledDate)
+		set taskDueDateStr to my formatDate(taskDueDate)
+		set taskCreationDateStr to my formatDate(taskCreationDate)
+		set taskModificationDateStr to my formatDate(taskModificationDate)
 
 		-- Build JSON object
 		set taskJSON to "{" & ¬
@@ -130,10 +178,14 @@ tell application "Things3"
 			"\"project\": \"" & my escapeJSON(projectName) & "\", " & ¬
 			"\"notes\": \"" & my escapeJSON(taskNotes) & "\", " & ¬
 			"\"tags\": " & taskTags & ", " & ¬
-			"\"activation_date\": " & taskActivationDate & ", " & ¬
-			"\"due_date\": " & taskDueDate & ", " & ¬
-			"\"creation_date\": " & taskCreationDate & ", " & ¬
-			"\"modification_date\": " & taskModificationDate & ¬
+			"\"scheduled_date\": " & taskScheduledDateStr & ", " & ¬
+			"\"due_date\": " & taskDueDateStr & ", " & ¬
+			"\"creation_date\": " & taskCreationDateStr & ", " & ¬
+			"\"modification_date\": " & taskModificationDateStr & ", " & ¬
+			"\"is_in_today\": " & (isInToday as string) & ", " & ¬
+			"\"is_overdue\": " & (isTaskOverdue as string) & ", " & ¬
+			"\"days_until_due\": " & daysUntilDue & ", " & ¬
+			"\"days_since_scheduled\": " & daysSinceScheduled & ¬
 			"}"
 
 		set end of openTasksJSON to taskJSON
@@ -215,9 +267,21 @@ end tell
 set generatedAt to my formatDate(current date)
 set todayString to do shell script "date +%Y-%m-%d"
 
+-- Build field guide for AI understanding
+set fieldGuide to "{" & ¬
+	"\"scheduled_date\": \"Start date - when you plan to BEGIN this task (appears in Today on this date)\", " & ¬
+	"\"due_date\": \"Deadline - when this task must be COMPLETED\", " & ¬
+	"\"is_in_today\": \"Boolean - is this task's scheduled date today or earlier?\", " & ¬
+	"\"is_overdue\": \"Boolean - is this task past its deadline?\", " & ¬
+	"\"days_until_due\": \"Integer - days remaining until deadline (negative if overdue, null if no deadline)\", " & ¬
+	"\"days_since_scheduled\": \"Integer - days since the task became active (null if not yet scheduled)\"" & ¬
+	"}"
+
 set finalJSON to "{" & ¬
+	"\"schema_version\": \"2.0\", " & ¬
 	"\"generated_at\": " & generatedAt & ", " & ¬
 	"\"date\": \"" & todayString & "\", " & ¬
+	"\"field_guide\": " & fieldGuide & ", " & ¬
 	"\"open_tasks\": [" & my joinList(openTasksJSON, ", ") & "], " & ¬
 	"\"active_projects\": [" & my joinList(activeProjectsJSON, ", ") & "], " & ¬
 	"\"completed_tasks_14d\": [" & my joinList(completedTasksJSON, ", ") & "]" & ¬

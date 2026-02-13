@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Things Daily Export System\n\nFeatures:\n- AppleScript for exporting Things3 data to JSON\n- Automated daily exports via launchd\n- Export open tasks, active projects, and recent completions\n- Privacy-aware with local-only storage\n- Installation and uninstall scripts\n- Pre-flight checks for dependencies\n- Improved error handling\n- Comprehensive documentation\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh repo create:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "WebFetch(domain:culturedcode.com)",
+      "Bash(osascript:*)"
     ]
   }
 }
