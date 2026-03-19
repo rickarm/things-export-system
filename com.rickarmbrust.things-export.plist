@@ -13,17 +13,15 @@
 
 	<key>StartCalendarInterval</key>
 	<dict>
-		<key>Hour</key>
-		<integer>6</integer>
 		<key>Minute</key>
 		<integer>0</integer>
 	</dict>
 
 	<key>StandardOutPath</key>
-	<string>/Users/USERNAME/Documents/ThingsSnapshot/export.log</string>
+	<string>/Users/USERNAME/Documents/ThingsSnapshot-fallback/export.log</string>
 
 	<key>StandardErrorPath</key>
-	<string>/Users/USERNAME/Documents/ThingsSnapshot/export.error.log</string>
+	<string>/Users/USERNAME/Documents/ThingsSnapshot-fallback/export.error.log</string>
 
 	<key>RunAtLoad</key>
 	<false/>

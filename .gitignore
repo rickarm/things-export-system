@@ -44,3 +44,4 @@ export.error.log
 
 # Local configuration (user-specific paths)
 .local-config.md
+.local-config.sh

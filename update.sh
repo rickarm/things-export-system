@@ -12,6 +12,12 @@ echo ""
 SCRIPT_FILE="$HOME/Scripts/export_things_daily_snapshot.scpt"
 CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Load local config if present
+if [ -f "$CURRENT_DIR/.local-config.sh" ]; then
+	source "$CURRENT_DIR/.local-config.sh"
+fi
+SNAPSHOT_BASE="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot}"
+
 if [ ! -f "$SCRIPT_FILE" ]; then
 	echo "❌ Error: AppleScript not found at $SCRIPT_FILE"
 	echo "Please run install.sh first."
@@ -34,9 +40,9 @@ osascript "$SCRIPT_FILE"
 echo ""
 
 TODAY=$(date +%Y-%m-%d)
-EXPORT_FILE="$HOME/Library/Mobile Documents/com~apple~CloudDocs/My Knowledge Base System/ThingsSnapshot/${TODAY}_things_snapshot.json"
+EXPORT_FILE=$(ls -t "$SNAPSHOT_BASE/${TODAY}"_*_things_snapshot.json 2>/dev/null | head -1)
 
-if [ -f "$EXPORT_FILE" ]; then
+if [ -n "$EXPORT_FILE" ] && [ -f "$EXPORT_FILE" ]; then
 	FILE_SIZE=$(wc -c < "$EXPORT_FILE" | tr -d ' ')
 	echo "========================================="
 	echo "Update successful!"
@@ -47,6 +53,6 @@ if [ -f "$EXPORT_FILE" ]; then
 	echo ""
 else
 	echo "⚠️  Warning: Export file was not created."
-	echo "Check the error log: $HOME/Library/Mobile Documents/com~apple~CloudDocs/My Knowledge Base System/ThingsSnapshot/export.error.log"
+	echo "Check the error log: $SNAPSHOT_BASE/export.error.log"
 	exit 1
 fi

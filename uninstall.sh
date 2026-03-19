@@ -10,7 +10,13 @@ echo ""
 
 LAUNCHD_PLIST="$HOME/Library/LaunchAgents/com.rickarmbrust.things-export.plist"
 SCRIPT_FILE="$HOME/Scripts/export_things_daily_snapshot.scpt"
-SNAPSHOT_DIR="$HOME/Documents/ThingsSnapshot"
+
+# Load local config if present
+CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -f "$CURRENT_DIR/.local-config.sh" ]; then
+	source "$CURRENT_DIR/.local-config.sh"
+fi
+SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot-fallback}"
 
 # Unload launchd job
 if [ -f "$LAUNCHD_PLIST" ]; then

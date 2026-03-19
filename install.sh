@@ -37,9 +37,14 @@ fi
 echo "✓ launchctl is available"
 echo ""
 
+# Load local config if present (overrides default paths without affecting git)
+if [ -f "$(dirname "$0")/.local-config.sh" ]; then
+	source "$(dirname "$0")/.local-config.sh"
+fi
+
 # Define paths
 SCRIPT_DIR="$HOME/Scripts"
-SNAPSHOT_DIR="$HOME/Documents/ThingsSnapshot"
+SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot-fallback}"
 LAUNCHD_PLIST="$HOME/Library/LaunchAgents/com.rickarmbrust.things-export.plist"
 CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 USERNAME=$(whoami)
@@ -50,6 +55,13 @@ mkdir -p "$SCRIPT_DIR"
 mkdir -p "$SNAPSHOT_DIR"
 echo "✓ Directories created"
 echo ""
+
+# Propagate custom path to AppleScript config file if set
+if [ -n "$THINGS_SNAPSHOT_DIR" ]; then
+	echo "$THINGS_SNAPSHOT_DIR" > "$HOME/.things-export-path"
+	echo "✓ Custom path saved: $THINGS_SNAPSHOT_DIR"
+	echo ""
+fi
 
 # Copy AppleScript
 echo "Installing AppleScript..."
