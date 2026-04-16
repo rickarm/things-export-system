@@ -43,7 +43,6 @@ if [ -f "$(dirname "$0")/.local-config.sh" ]; then
 fi
 
 # Define paths
-SCRIPT_DIR="$HOME/Scripts"
 SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot-fallback}"
 LAUNCHD_PLIST="$HOME/Library/LaunchAgents/com.rickarmbrust.things-export.plist"
 CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -51,7 +50,7 @@ USERNAME=$(whoami)
 
 # Create directories
 echo "Creating directories..."
-mkdir -p "$SCRIPT_DIR"
+mkdir -p "$HOME/Documents/ThingsSnapshot"
 mkdir -p "$SNAPSHOT_DIR"
 echo "✓ Directories created"
 echo ""
@@ -63,16 +62,17 @@ if [ -n "$THINGS_SNAPSHOT_DIR" ]; then
 	echo ""
 fi
 
-# Copy AppleScript
-echo "Installing AppleScript..."
-cp "$CURRENT_DIR/export_things_daily_snapshot.scpt" "$SCRIPT_DIR/"
-chmod +x "$SCRIPT_DIR/export_things_daily_snapshot.scpt"
-echo "✓ AppleScript installed to: $SCRIPT_DIR/export_things_daily_snapshot.scpt"
+# Ensure the script is executable in-place (runs from repo; no copy needed)
+echo "Preparing AppleScript..."
+chmod +x "$CURRENT_DIR/export_things_daily_snapshot.scpt"
+echo "✓ AppleScript ready at: $CURRENT_DIR/export_things_daily_snapshot.scpt"
 echo ""
 
-# Copy launchd plist and update username
+# Install launchd plist: substitute USERNAME and the repo-relative script path
 echo "Installing launchd scheduler..."
-sed "s|/Users/USERNAME/|/Users/$USERNAME/|g" "$CURRENT_DIR/com.rickarmbrust.things-export.plist" > "$LAUNCHD_PLIST"
+sed -e "s|SCRIPT_INSTALL_PATH|$CURRENT_DIR/export_things_daily_snapshot.scpt|g" \
+    -e "s|/Users/USERNAME/|/Users/$USERNAME/|g" \
+    "$CURRENT_DIR/com.rickarmbrust.things-export.plist" > "$LAUNCHD_PLIST"
 echo "✓ Scheduler plist installed"
 echo ""
 
@@ -85,7 +85,7 @@ echo ""
 
 # Test the export
 echo "Running test export..."
-osascript "$SCRIPT_DIR/export_things_daily_snapshot.scpt"
+osascript "$CURRENT_DIR/export_things_daily_snapshot.scpt"
 echo "✓ Test export completed"
 echo ""
 
@@ -104,7 +104,7 @@ if [ -f "$EXPORT_FILE" ]; then
 	echo ""
 	echo "The export will run automatically every day at 6:00 AM."
 	echo "You can manually trigger it anytime with:"
-	echo "  osascript ~/Scripts/export_things_daily_snapshot.scpt"
+	echo "  osascript $CURRENT_DIR/export_things_daily_snapshot.scpt"
 	echo ""
 	echo "Logs are saved to:"
 	echo "  $SNAPSHOT_DIR/export.log"

@@ -8,7 +8,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/bin/osascript</string>
-		<string>/Users/USERNAME/Scripts/export_things_daily_snapshot.scpt</string>
+		<string>SCRIPT_INSTALL_PATH</string>
 	</array>
 
 	<key>StartCalendarInterval</key>
