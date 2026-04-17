@@ -9,12 +9,12 @@ osascript ~/Scripts/export_things_daily_snapshot.scpt
 
 ### View Today's Export
 ```bash
-open ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+open ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ### View Today's Export (formatted)
 ```bash
-jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq . ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ### Check Scheduled Job Status
@@ -24,12 +24,12 @@ launchctl list | grep things-export
 
 ### View Recent Export Logs
 ```bash
-tail -20 ~/Documents/ThingsSnapshot/export.log
+tail -20 ~/kb/ThingsSnapshot/export.log
 ```
 
 ### View Recent Errors
 ```bash
-tail -20 ~/Documents/ThingsSnapshot/export.error.log
+tail -20 ~/kb/ThingsSnapshot/export.error.log
 ```
 
 ### Reload Scheduled Job
@@ -42,8 +42,8 @@ launchctl load ~/Library/LaunchAgents/com.rickarmbrust.things-export.plist
 
 - **Script**: `~/Scripts/export_things_daily_snapshot.scpt`
 - **Scheduler**: `~/Library/LaunchAgents/com.rickarmbrust.things-export.plist`
-- **Exports**: `~/Documents/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json`
-- **Logs**: `~/Documents/ThingsSnapshot/export.log`
+- **Exports**: `~/kb/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json`
+- **Logs**: `~/kb/ThingsSnapshot/export.log`
 
 ## Troubleshooting
 
@@ -65,27 +65,27 @@ log show --predicate 'subsystem == "com.apple.launchd"' --last 1h | grep things-
 
 ### Count Open Tasks
 ```bash
-jq '.open_tasks | length' ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq '.open_tasks | length' ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ### List Overdue Tasks
 ```bash
-jq '.open_tasks[] | select(.due_date != null and .due_date < now) | .name' ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq '.open_tasks[] | select(.due_date != null and .due_date < now) | .name' ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ### Tasks by Area
 ```bash
-jq -r '.open_tasks | group_by(.area) | .[] | "\(.[0].area): \(length) tasks"' ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq -r '.open_tasks | group_by(.area) | .[] | "\(.[0].area): \(length) tasks"' ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ### Completed Tasks Count (14d)
 ```bash
-jq '.completed_tasks_14d | length' ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq '.completed_tasks_14d | length' ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ### Projects Health
 ```bash
-jq -r '.active_projects[] | "\(.name): \(.open_tasks)/\(.total_tasks) open"' ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq -r '.active_projects[] | "\(.name): \(.open_tasks)/\(.total_tasks) open"' ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ## Schedule

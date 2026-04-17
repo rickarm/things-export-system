@@ -18,10 +18,10 @@
 	</dict>
 
 	<key>StandardOutPath</key>
-	<string>/Users/USERNAME/Documents/ThingsSnapshot-fallback/export.log</string>
+	<string>/Users/USERNAME/kb/ThingsSnapshot/export.log</string>
 
 	<key>StandardErrorPath</key>
-	<string>/Users/USERNAME/Documents/ThingsSnapshot-fallback/export.error.log</string>
+	<string>/Users/USERNAME/kb/ThingsSnapshot/export.error.log</string>
 
 	<key>RunAtLoad</key>
 	<false/>

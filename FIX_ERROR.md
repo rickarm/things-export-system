@@ -71,24 +71,24 @@ This works because Things only has three status values: `open`, `completed`, and
 
 After updating, you should see:
 ```
-Export complete: /Users/richardarmbrust/Documents/ThingsSnapshot/2026-02-04_things_snapshot.json
+Export complete: /Users/richardarmbrust/kb/ThingsSnapshot/2026-02-04_things_snapshot.json
 ```
 
 Check the file:
 ```bash
-open ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+open ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 Or verify with jq:
 ```bash
-jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json | head -20
+jq . ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json | head -20
 ```
 
 ## Still Having Issues?
 
 Check the error log:
 ```bash
-cat ~/Documents/ThingsSnapshot/export.error.log
+cat ~/kb/ThingsSnapshot/export.error.log
 ```
 
 Verify Things automation permissions:

@@ -1,6 +1,6 @@
 -- Things Daily Snapshot Export to JSON
 -- Exports open tasks, active projects, and recent completions
--- Output: ~/Documents/ThingsSnapshot-fallback/YYYY-MM-DD_HHMMSS_things_snapshot.json
+-- Output: ~/kb/ThingsSnapshot/YYYY-MM-DD_HHMMSS_things_snapshot.json
 
 -- Helper function to escape strings for JSON
 on escapeJSON(theText)
@@ -294,10 +294,10 @@ set finalJSON to "{" & ¬
 -- CONFIGURATION: Change this path to your preferred export location
 -- Examples:
 --   iCloud: "Library/Mobile Documents/com~apple~CloudDocs/ThingsExports/"
---   Local: "Documents/ThingsSnapshot-fallback/"
+--   Local: "kb/ThingsSnapshot/"
 --   Dropbox: "Dropbox/ThingsExports/"
 -- Or set a local override by creating ~/.things-export-path with your custom path.
-set outputDir to POSIX path of (path to home folder) & "Documents/ThingsSnapshot-fallback/"
+set outputDir to POSIX path of (path to home folder) & "kb/ThingsSnapshot/"
 try
 	set customPath to do shell script "cat ~/.things-export-path 2>/dev/null | tr -d '\\n'"
 	if customPath is not "" then

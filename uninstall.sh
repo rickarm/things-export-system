@@ -16,7 +16,7 @@ CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ -f "$CURRENT_DIR/.local-config.sh" ]; then
 	source "$CURRENT_DIR/.local-config.sh"
 fi
-SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot-fallback}"
+SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/kb/ThingsSnapshot}"
 
 # Unload launchd job
 if [ -f "$LAUNCHD_PLIST" ]; then
