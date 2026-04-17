@@ -43,14 +43,13 @@ if [ -f "$(dirname "$0")/.local-config.sh" ]; then
 fi
 
 # Define paths
-SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot-fallback}"
+SNAPSHOT_DIR="${THINGS_SNAPSHOT_DIR:-$HOME/kb/ThingsSnapshot}"
 LAUNCHD_PLIST="$HOME/Library/LaunchAgents/com.rickarmbrust.things-export.plist"
 CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 USERNAME=$(whoami)
 
 # Create directories
 echo "Creating directories..."
-mkdir -p "$HOME/Documents/ThingsSnapshot"
 mkdir -p "$SNAPSHOT_DIR"
 echo "✓ Directories created"
 echo ""

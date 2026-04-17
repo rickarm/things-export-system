@@ -9,7 +9,7 @@ Each daily snapshot contains:
 - **Active projects** with task counts
 - **Completed tasks** from the last 14 days
 
-Files are saved to `~/Documents/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json`.
+Files are saved to `~/kb/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json`.
 
 ## Key Files
 
@@ -45,5 +45,5 @@ osascript ~/Scripts/export_things_daily_snapshot.scpt
 |---|---|
 | AppleScript | `~/Scripts/export_things_daily_snapshot.scpt` |
 | launchd plist | `~/Library/LaunchAgents/com.rickarmbrust.things-export.plist` |
-| Daily exports | `~/Documents/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json` |
-| Logs | `~/Documents/ThingsSnapshot/export.log` / `export.error.log` |
+| Daily exports | `~/kb/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json` |
+| Logs | `~/kb/ThingsSnapshot/export.log` / `export.error.log` |

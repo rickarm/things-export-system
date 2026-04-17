@@ -16,7 +16,7 @@ CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ -f "$CURRENT_DIR/.local-config.sh" ]; then
 	source "$CURRENT_DIR/.local-config.sh"
 fi
-SNAPSHOT_BASE="${THINGS_SNAPSHOT_DIR:-$HOME/Documents/ThingsSnapshot}"
+SNAPSHOT_BASE="${THINGS_SNAPSHOT_DIR:-$HOME/kb/ThingsSnapshot}"
 
 if [ ! -f "$SCRIPT_FILE" ]; then
 	echo "❌ Error: AppleScript not found at $SCRIPT_FILE"

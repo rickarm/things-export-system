@@ -11,7 +11,7 @@ If you find a bug, please open an issue with:
 - **Environment**: macOS version, Things3 version
 - **Steps to reproduce**: What did you do?
 - **Expected vs actual behavior**: What should have happened?
-- **Logs**: Include relevant error logs from `~/Documents/ThingsSnapshot/export.error.log`
+- **Logs**: Include relevant error logs from `~/kb/ThingsSnapshot/export.error.log`
 
 ### Suggesting Enhancements
 
@@ -69,7 +69,7 @@ cd things-export-system
 3. Make changes and test:
 ```bash
 osascript ~/Scripts/export_things_daily_snapshot.scpt
-jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq . ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ## Areas for Contribution

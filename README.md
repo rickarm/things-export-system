@@ -48,7 +48,7 @@ If you prefer to install manually:
 1. **Create directories:**
 ```bash
 mkdir -p ~/Scripts
-mkdir -p ~/Documents/ThingsSnapshot
+mkdir -p ~/kb/ThingsSnapshot
 ```
 
 2. **Copy the AppleScript:**
@@ -74,7 +74,7 @@ osascript ~/Scripts/export_things_daily_snapshot.scpt
 
 Once installed, exports run automatically every day at 6:00 AM. Files are saved to:
 ```
-~/Documents/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json
+~/kb/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json
 ```
 
 ### Manual Export
@@ -88,12 +88,12 @@ osascript ~/Scripts/export_things_daily_snapshot.scpt
 
 Open in any text editor or JSON viewer:
 ```bash
-open ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+open ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 Or use `jq` for formatted viewing:
 ```bash
-jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq . ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ## JSON Schema (v2.0)
@@ -245,7 +245,7 @@ Help me decide which to delete, defer, or recommit to.
 
 ### Log Files
 
-Logs are saved to `~/Documents/ThingsSnapshot/`:
+Logs are saved to `~/kb/ThingsSnapshot/`:
 - `export.log` - Standard output from scheduled runs
 - `export.error.log` - Error messages if something fails
 
@@ -260,8 +260,8 @@ You should see: `com.rickarmbrust.things-export`
 ### View Recent Logs
 
 ```bash
-tail -20 ~/Documents/ThingsSnapshot/export.log
-tail -20 ~/Documents/ThingsSnapshot/export.error.log
+tail -20 ~/kb/ThingsSnapshot/export.log
+tail -20 ~/kb/ThingsSnapshot/export.error.log
 ```
 
 ### Manual Test Run
@@ -297,7 +297,7 @@ osascript ~/Scripts/export_things_daily_snapshot.scpt
 
 3. **Check error logs:**
 ```bash
-cat ~/Documents/ThingsSnapshot/export.error.log
+cat ~/kb/ThingsSnapshot/export.error.log
 ```
 
 ### Scheduled Job Not Running
@@ -328,21 +328,21 @@ The AppleScript includes robust escaping for:
 
 If you encounter parsing errors, check the error log and verify the JSON with:
 ```bash
-jq . ~/Documents/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
+jq . ~/kb/ThingsSnapshot/$(date +%Y-%m-%d)_things_snapshot.json
 ```
 
 ## Customization
 
 ### Change Export Location
 
-The default export location is `~/Documents/ThingsSnapshot/`. To use a different location:
+The default export location is `~/kb/ThingsSnapshot/`. To use a different location:
 
 **Option 1: iCloud Drive (Recommended for sync across devices)**
 
 Edit the AppleScript (`~/Scripts/export_things_daily_snapshot.scpt`):
 ```applescript
 -- Find this line (around line 293):
-set outputDir to POSIX path of (path to home folder) & "Documents/ThingsSnapshot/"
+set outputDir to POSIX path of (path to home folder) & "kb/ThingsSnapshot/"
 
 -- Change to iCloud:
 set outputDir to POSIX path of (path to home folder) & "Library/Mobile Documents/com~apple~CloudDocs/ThingsExports/"
@@ -414,13 +414,13 @@ Edit both the AppleScript and plist file to use a different location.
 
 **In the AppleScript:**
 ```applescript
-set outputDir to POSIX path of (path to home folder) & "Documents/ThingsSnapshot/"
+set outputDir to POSIX path of (path to home folder) & "kb/ThingsSnapshot/"
 ```
 
 **In the plist:**
 ```xml
 <key>StandardOutPath</key>
-<string>/Users/YOUR_USERNAME/Documents/ThingsSnapshot/export.log</string>
+<string>/Users/YOUR_USERNAME/kb/ThingsSnapshot/export.log</string>
 ```
 
 ## Uninstall
@@ -436,7 +436,7 @@ rm ~/Library/LaunchAgents/com.rickarmbrust.things-export.plist
 rm ~/Scripts/export_things_daily_snapshot.scpt
 
 # Optionally remove export directory
-# rm -rf ~/Documents/ThingsSnapshot
+# rm -rf ~/kb/ThingsSnapshot
 ```
 
 ## Privacy & Security
@@ -453,9 +453,9 @@ rm ~/Scripts/export_things_daily_snapshot.scpt
 |------|----------|
 | AppleScript | `~/Scripts/export_things_daily_snapshot.scpt` |
 | launchd plist | `~/Library/LaunchAgents/com.rickarmbrust.things-export.plist` |
-| Daily exports | `~/Documents/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json` |
-| Standard log | `~/Documents/ThingsSnapshot/export.log` |
-| Error log | `~/Documents/ThingsSnapshot/export.error.log` |
+| Daily exports | `~/kb/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json` |
+| Standard log | `~/kb/ThingsSnapshot/export.log` |
+| Error log | `~/kb/ThingsSnapshot/export.error.log` |
 
 ## Contributing
 

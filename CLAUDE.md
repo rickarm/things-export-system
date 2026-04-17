@@ -32,8 +32,8 @@ install.sh                           # Installer script
 
 ## Output
 
-- File: `~/Documents/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json`
-- Logs: `~/Documents/ThingsSnapshot/export.log` and `export.error.log`
+- File: `~/kb/ThingsSnapshot/YYYY-MM-DD_things_snapshot.json`
+- Logs: `~/kb/ThingsSnapshot/export.log` and `export.error.log`
 - Schema version: 2.0
 
 ### JSON structure (v2.0)

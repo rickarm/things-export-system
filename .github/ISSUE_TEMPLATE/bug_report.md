@@ -28,7 +28,7 @@ What actually happened.
 ## Error Logs
 If applicable, paste relevant logs from:
 ```bash
-tail -20 ~/Documents/ThingsSnapshot/export.error.log
+tail -20 ~/kb/ThingsSnapshot/export.error.log
 ```
 
 ## Additional Context
