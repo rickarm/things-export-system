@@ -1,6 +1,6 @@
 # Things Export System: Daily Task Snapshot
 
-AppleScript that exports Things 3 tasks and projects to JSON daily. Used by sherlock-hq dashboard and AI analysis.
+AppleScript that exports Things 3 tasks and projects to JSON hourly. Used by sherlock-hq dashboard and AI analysis.
 
 ## Development Workflow
 
@@ -26,7 +26,7 @@ osascript ~/Scripts/export_things_daily_snapshot.scpt
 
 ```
 export_things_daily_snapshot.scpt    # Main AppleScript (installed to ~/Scripts/)
-com.rickarmbrust.things-export.plist # launchd config (runs daily at 6 AM)
+com.rickarmbrust.things-export.plist # launchd config (runs hourly, on the hour)
 install.sh                           # Installer script
 ```
 
