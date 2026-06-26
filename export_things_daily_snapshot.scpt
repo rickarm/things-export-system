@@ -103,16 +103,38 @@ on isOverdue(theDueDate)
 	return theDueDate < now
 end isOverdue
 
+-- Helper to record an export failure in export.log so the log tail / watcher
+-- shows WHY it stopped, instead of going silent on stale success lines.
+on logFailure(outputDir, errMsg, errNum)
+	try
+		set ts to do shell script "date '+%Y-%m-%d %H:%M:%S'"
+		set entry to ts & "  Export FAILED (" & errNum & "): " & errMsg
+		do shell script "mkdir -p " & quoted form of outputDir & " && printf '%s\\n' " & quoted form of entry & " >> " & quoted form of (outputDir & "export.log")
+	end try
+end logFailure
+
 -- Main script
+-- Resolve the output directory up front so any failure can be logged to it.
+-- Set a local override by creating ~/.things-export-path with a custom path.
+set outputDir to POSIX path of (path to home folder) & "kb/ThingsSnapshot/"
 try
-	-- Check if Things3 is running, launch if needed
-	if not (application "Things3" is running) then
-		tell application "Things3" to launch
-		delay 2 -- Give Things3 time to fully launch
+	set customPath to do shell script "cat ~/.things-export-path 2>/dev/null | tr -d '\\n'"
+	if customPath is not "" then
+		set outputDir to customPath & "/"
 	end if
 end try
 
-tell application "Things3"
+-- Wrap the whole export so any failure is recorded in export.log, not just stderr.
+try
+	-- Check if Things3 is running, launch if needed
+	try
+		if not (application "Things3" is running) then
+			tell application "Things3" to launch
+			delay 2 -- Give Things3 time to fully launch
+		end if
+	end try
+
+	tell application "Things3"
 
 	-- Calculate date range for completed tasks (last 14 days)
 	set fourteenDaysAgo to (current date) - (14 * days)
@@ -291,19 +313,7 @@ set finalJSON to "{" & ¬
 -- ========================================
 -- WRITE TO FILE
 -- ========================================
--- CONFIGURATION: Change this path to your preferred export location
--- Examples:
---   iCloud: "Library/Mobile Documents/com~apple~CloudDocs/ThingsExports/"
---   Local: "kb/ThingsSnapshot/"
---   Dropbox: "Dropbox/ThingsExports/"
--- Or set a local override by creating ~/.things-export-path with your custom path.
-set outputDir to POSIX path of (path to home folder) & "kb/ThingsSnapshot/"
-try
-	set customPath to do shell script "cat ~/.things-export-path 2>/dev/null | tr -d '\\n'"
-	if customPath is not "" then
-		set outputDir to customPath & "/"
-	end if
-end try
+-- outputDir was resolved at the top of the script (honors ~/.things-export-path)
 set outputFile to outputDir & fileTimestamp & "_things_snapshot.json"
 
 -- Create directory if needed
@@ -327,4 +337,10 @@ on error errMsg
 	error "Failed to open file for writing: " & errMsg
 end try
 
-return "Export complete: " & outputFile
+	return "Export complete: " & outputFile
+on error errMsg number errNum
+	-- Surface the failure in export.log (what the watcher tails) and re-raise so
+	-- launchd still records it in export.error.log.
+	my logFailure(outputDir, errMsg, errNum)
+	error errMsg number errNum
+end try

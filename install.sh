@@ -79,7 +79,7 @@ echo ""
 echo "Loading scheduled job..."
 launchctl unload "$LAUNCHD_PLIST" 2>/dev/null || true  # Unload if already loaded
 launchctl load "$LAUNCHD_PLIST"
-echo "✓ Scheduled job loaded (runs daily at 6:00 AM)"
+echo "✓ Scheduled job loaded (runs hourly, on the hour)"
 echo ""
 
 # Test the export
@@ -101,7 +101,7 @@ if [ -f "$EXPORT_FILE" ]; then
 	echo "Export file created: $EXPORT_FILE"
 	echo "File size: $FILE_SIZE bytes"
 	echo ""
-	echo "The export will run automatically every day at 6:00 AM."
+	echo "The export will run automatically every hour, on the hour."
 	echo "You can manually trigger it anytime with:"
 	echo "  osascript $CURRENT_DIR/export_things_daily_snapshot.scpt"
 	echo ""
